@@ -1,1 +1,1 @@
-module.exports = (prefix) => (strings) => `${prefix}: ${strings.join("")}`;
+module.exports = (prefix) => (strings) => console.log(`${prefix}: ${strings.join("")}`);
