@@ -7,21 +7,27 @@ const events = {
     message: "message",
     delta: "delta"
 };
+AwsIot.thingShadow
 
 const awsDeltaPath = "$aws/things/<THING>/shadow/update/delta";
 const getAwsDeltaPath = thing => awsDeltaPath.replace("<THING>", thing);
 let log;
 
 class DeviceManager {
-    constructor(deviceModuleOptions, topicsToSubscribeTo = [], onMessage = null) {
+    constructor(deviceModuleOptions, topicsToSubscribeTo = [], onMessage = null, onDelta = null) {
         this.onMessage = onMessage;
+        this.onDelta = onDelta;
         this._topicsToSubscribeTo = topicsToSubscribeTo;
         this._subscribed = false;
         const opts = { ...deviceDefaults, ...deviceModuleOptions };
         this.device = new AwsIot.device(opts);
         this.clientId = opts.clientId;
+
+        this.shadow = new AwsIot.thingShadow(opts);
+
         log = makeLogger(`Device ${this.clientId}`);
         this.bindHandlers();
+        
     }
 
     bindHandlers() {
@@ -33,7 +39,6 @@ class DeviceManager {
 
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
-        this.device.on(events.delta, this._handleDelta);
     }
 
     subscribe() {
@@ -50,23 +55,24 @@ class DeviceManager {
         }
         this.connected = true;
         log`connected`;
+        log`resgistering thingShadow`;
+        this.shadow.register(this.clientId);
         log`subscribing to shadow update deltas`;
-        this._topicsToSubscribeTo.push(getAwsDeltaPath(this.clientId));
+        this.deltaTopicPath = getAwsDeltaPath(this.clientId);
+        this._topicsToSubscribeTo.push(this.deltaTopicPath);
         this.subscribe();
     }
 
     _handleMessage(topic, payload) {
-        console.log(`topic: ${topic}`);
-        console.log("arguments: ", arguments);
-        if(this.onMessage) {
-            this.onMessage(topic, payload);
+        if (topic === this.deltaTopicPath) {
+            if (this.onDelta) {
+                this.onDelta(payload, this.shadow);
+            }
+        } else {
+            if (this.onMessage) {
+                this.onMessage(topic, payload, this.shadow);
+            }
         }
-    }
-
-    _handleDelta(topic, payload) {
-        log`Delta received from Topic ${topic}. Processing...`;
-        log`Payload:`;
-        console.log(payload);
     }
 
 }

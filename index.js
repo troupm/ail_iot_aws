@@ -4,9 +4,15 @@ const LedManager = require("./ledManager");
 const thingName = 'AIL_IoT_RPi_01';
 const thingHost = 'a3knx5ouu01ymf-ats.iot.us-east-1.amazonaws.com';
 
-function handleMessage(topic, payload) {
-    payload = JSON.parse(payload.toString());
-    console.log("payload", payload);
+
+const led12 = new LedManager(12);
+
+function handleDelta(payload, shadow) {
+    console.log("delta", payload, shadow);
 }
 
-new DeviceManager({ clientId: thingName, host: thingHost }, ["LED"], handleMessage);
+function handleMesasage(topic, payload, shadow) {
+    console.log("message", topic, payload, shadow);
+}
+
+new DeviceManager({clientId: thingName, host: thingHost}, ["LED"], handleMesasage, handleDelta);
