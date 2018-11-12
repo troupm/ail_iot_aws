@@ -14,6 +14,7 @@ let log;
 
 class DeviceManager {
     constructor(deviceModuleOptions, subscriptions = []) {
+        console.log("constructor");
         this._toSubscribeTo = subscriptions;
         this._initialSubscription = false;
         const opts = { ...deviceDefaults, ...deviceModuleOptions };
@@ -24,6 +25,8 @@ class DeviceManager {
     }
 
     bindHandlers() {
+        console.log("bind handlers");
+
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
         this._handleDelta = this._handleDelta.bind(this);
@@ -34,6 +37,8 @@ class DeviceManager {
     }
 
     subscribe(additionalTopics) {
+        console.log("subscribe");
+
         this.device.subscribe(additionalTopics);
         if (!this._initialSubscription) {
             this.device.subscribe(this._toSubscribeTo);
