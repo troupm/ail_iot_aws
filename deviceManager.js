@@ -13,10 +13,10 @@ const getAwsDeltaPath = thing => awsDeltaPath.replace("<THING>", thing);
 let log;
 
 class DeviceManager {
-    constructor(deviceModuleOptions, subscriptions = []) {
-        console.log("constructor");
-        this._toSubscribeTo = subscriptions;
-        this._initialSubscription = false;
+    constructor(deviceModuleOptions, topicsToSubscribeTo = [], onMessage = null) {
+        this.onMessage = onMessage;
+        this._topicsToSubscribeTo = topicsToSubscribeTo;
+        this._subscribed = false;
         const opts = { ...deviceDefaults, ...deviceModuleOptions };
         this.device = new AwsIot.device(opts);
         this.clientId = opts.clientId;
@@ -25,7 +25,7 @@ class DeviceManager {
     }
 
     bindHandlers() {
-        console.log("bind handlers");
+        log`bind handlers`;
 
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
@@ -36,19 +36,16 @@ class DeviceManager {
         this.device.on(events.delta, this._handleDelta);
     }
 
-    subscribe(additionalTopics = []) {
-        console.log("subscribe");
-        if (additionalTopics.length) {
-            this.device.subscribe(additionalTopics);
-        }
-        if (!this._initialSubscription) {
-            this.device.subscribe(this._toSubscribeTo);
+    subscribe() {
+        log`subscribe`;
+        if (!this._subscribed) {
+            this.device.subscribe(this._topicsToSubscribeTo);
         }
     }
 
     _handleConnect() {
         if (this.connected) {
-            console.log("already connected");
+            log`already connected`;
             return;
         }
         this.connected = true;
@@ -62,6 +59,9 @@ class DeviceManager {
         log`Message received from Topic ${topic}. Processing...`;
         log`Payload:`;
         console.log(payload);
+        if(this.onMessage) {
+            this.onMessage(topic, payload);
+        }
     }
 
     _handleDelta(topic, payload) {
