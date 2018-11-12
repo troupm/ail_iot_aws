@@ -47,7 +47,7 @@ class DeviceManager {
     }
 
     subscribe() {
-        this.log`MESSAGE METHOD`;
+        this.log`SUBSCRIBE METHOD`;
         if (!this._subscribed) {
             this.device.subscribe(this._topicsToSubscribeTo);
         }
