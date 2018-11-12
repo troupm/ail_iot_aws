@@ -10,12 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "aws-iot-shadow-helper": "^0.2.1",
-    "aws-sdk": "^2.353.0",
+    "aws-iot-device-sdk": "^2.2.1",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "express": "^4.16.4",
     "node-gyp": "^3.8.0",
     "pi-pins": "^1.0.2",
     "rpio": "^0.9.23"
+  },
+  "devDependencies": {
+    "typescript": "^3.1.3",
+    "@types/aws-iot-device-sdk": "^2.1.1"
   }
 }

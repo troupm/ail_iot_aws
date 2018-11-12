@@ -1,0 +1,1 @@
+module.exports = (prefix) => (strings) => `${prefix}: ${strings.join("")}`;
