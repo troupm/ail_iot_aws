@@ -5,7 +5,10 @@ const makeLogger = require("./makeLogger");
 const events = {
     connect: "connect",
     message: "message",
-    delta: "delta"
+    delta: "delta",
+    close: "close",
+    reconnect: "reconnect",
+    offline: "offline"
 };
 AwsIot.thingShadow
 
@@ -38,6 +41,11 @@ class DeviceManager {
 
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
+
+        this.device.on(events.close, () => console.log("CLOSE EVENT"));
+        this.device.on(events.reconnect, () => console.log("RECONNECT EVENT"));
+        this.device.on(events.offline, () => console.log("OFFLINE EVENT"));
+        this.device.on("error", err => console.log(`ERROR EVENT`, err));
     }
 
     subscribe() {
