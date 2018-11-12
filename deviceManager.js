@@ -35,7 +35,6 @@ class DeviceManager {
 
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
-        this._handleDelta = this._handleDelta.bind(this);
 
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
