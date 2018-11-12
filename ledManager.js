@@ -4,8 +4,7 @@ const makeLogger = require("./makeLogger");
 let log;
 
 class LedManager {
-    constructor(pin, onChange = null) {
-        this.onChange = onChange;
+    constructor(pin) {
         this.pin = pin;
         this.led = gpio.connect(pin);
         this.led.mode("out");
