@@ -39,10 +39,10 @@ class DeviceManager {
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
 
-        this.device.on(events.close, () => this.log("CLOSE EVENT"));
-        this.device.on(events.reconnect, () => this.log("RECONNECT EVENT"));
-        this.device.on(events.offline, () => this.log("OFFLINE EVENT"));
-        this.device.on(events.error, (err) => this.log(`ERROR EVENT`, err));
+        this.device.on(events.close, () => this.log`CLOSE EVENT`);
+        this.device.on(events.reconnect, () => this.log`RECONNECT EVENT`);
+        this.device.on(events.offline, () => this.log`OFFLINE EVENT`);
+        this.device.on(events.error, (err) => this.log`ERROR EVENT: ${err}`);
     }
 
     subscribe() {
