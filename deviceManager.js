@@ -46,6 +46,11 @@ class DeviceManager {
     }
 
     _handleConnect() {
+        if(this.connected) {
+            console.log("already connected");
+            return;
+        }
+        this.connected = true;
         log`connected`;
         log`subscribing to shadow update deltas`;
         this.topicPath = getAwsDeltaPath(this.clientId);
