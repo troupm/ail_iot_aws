@@ -10,7 +10,7 @@ const events = {
 
 const awsDeltaPath = "$aws/things/<THING>/shadow/update/delta";
 const getAwsDeltaPath = thing => awsDeltaPath.replace("<THING>", thing);
-const log;
+let log;
 
 class DeviceManager {
   constructor(deviceModuleDetails, onConnect = null, onMessage = null, onDelta = null) {
