@@ -61,11 +61,11 @@ class DeviceManager {
         }
         this.connected = true;
         this.log`connected`;
-        //this.log`resgistering thingShadow`;
-        //this.shadow.register(this.clientId);
-        //this.log`subscribing to shadow update deltas`;
-        //this.deltaTopicPath = getAwsDeltaPath(this.clientId);
-        //this._topicsToSubscribeTo.push(this.deltaTopicPath);
+        this.log`resgistering thingShadow`;
+        this.shadow.register(this.clientId);
+        this.log`subscribing to shadow update deltas`;
+        this.deltaTopicPath = getAwsDeltaPath(this.clientId);
+        this._topicsToSubscribeTo.push(this.deltaTopicPath);
         this.subscribe();
     }
 
