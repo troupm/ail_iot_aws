@@ -65,7 +65,7 @@ class DeviceManager {
         this.shadow.register(this.clientId);
         this.log`subscribing to shadow update deltas`;
         this.deltaTopicPath = getAwsDeltaPath(this.clientId);
-        this._topicsToSubscribeTo.push(this.deltaTopicPath);
+        //this._topicsToSubscribeTo.push(this.deltaTopicPath);
         this.subscribe();
     }
 
