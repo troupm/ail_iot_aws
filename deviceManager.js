@@ -33,17 +33,16 @@ class DeviceManager {
     }
 
     bindHandlers() {
-
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
 
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
 
-        this.device.on(events.close, () => console.log("CLOSE EVENT"));
-        this.device.on(events.reconnect, () => console.log("RECONNECT EVENT"));
-        this.device.on(events.offline, () => console.log("OFFLINE EVENT"));
-        this.device.on(events.error, (err) => console.log(`ERROR EVENT`, err));
+        this.device.on(events.close, () => this.log("CLOSE EVENT"));
+        this.device.on(events.reconnect, () => this.log("RECONNECT EVENT"));
+        this.device.on(events.offline, () => this.log("OFFLINE EVENT"));
+        this.device.on(events.error, (err) => this.log(`ERROR EVENT`, err));
     }
 
     subscribe() {
