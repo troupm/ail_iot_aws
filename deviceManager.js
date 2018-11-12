@@ -51,7 +51,7 @@ class DeviceManager {
         this.connected = true;
         log`connected`;
         log`subscribing to shadow update deltas`;
-        this._toSubscribeTo.push(getAwsDeltaPath(this.clientId));
+        this._topicsToSubscribeTo.push(getAwsDeltaPath(this.clientId));
         this.subscribe();
     }
 
