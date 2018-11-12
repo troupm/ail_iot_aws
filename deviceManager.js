@@ -36,25 +36,26 @@ class DeviceManager {
         this.device.on(events.delta, this._handleDelta);
     }
 
-    subscribe(additionalTopics) {
+    subscribe(additionalTopics = []) {
         console.log("subscribe");
-
-        this.device.subscribe(additionalTopics);
+        if (additionalTopics.length) {
+            this.device.subscribe(additionalTopics);
+        }
         if (!this._initialSubscription) {
             this.device.subscribe(this._toSubscribeTo);
         }
     }
 
     _handleConnect() {
-        if(this.connected) {
+        if (this.connected) {
             console.log("already connected");
             return;
         }
         this.connected = true;
         log`connected`;
         log`subscribing to shadow update deltas`;
-        this.topicPath = getAwsDeltaPath(this.clientId);
-        this.subscribe(this.topicPath);
+        this._toSubscribeTo.push(getAwsDeltaPath(this.clientId));
+        this.subscribe();
     }
 
     _handleMessage(topic, payload) {
