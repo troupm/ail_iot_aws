@@ -25,39 +25,43 @@ class DeviceManager {
   }
 
   bindHandlers() {
+    this._handleConnect = this._handleConnect.bind(this);
+    this._handleMessage = this._handleMessage.bind(this);
+    this._handleDelta = this._handleDelta.bind(this);
+
     this.device.on(events.connect, this._handleConnect);
     this.device.on(events.message, this._handleMessage);
     this.device.on(events.delta, this._handleDelta);
   }
 
-  _handleConnect = () => {
+  _handleConnect() {
     log`connected`;
     log`subscribing to shadow update deltas`;
     this.topicPath = getAwsDeltaPath(this.clientId);
     this.device.subscribe(this.topicPath);
-    if(this.onConnect) {
+    if (this.onConnect) {
       log`onConnect provided, calling...`;
       this.onConnect();
     }
   }
 
-  _handleMessage = (topic, payload) => {
+  _handleMessage(topic, payload) {
     log`Message received from Topic ${topic}. Processing...`;
     log`Payload:`;
     console.log(payload);
 
-    if(this.onMessage) {
+    if (this.onMessage) {
       log`onMessage provided, calling...`;
       this.onMessage(topic, payload);
     }
   }
 
-  _handleDelta = (topic, payload) => {
+  _handleDelta(topic, payload) {
     log`Delta received from Topic ${topic}. Processing...`;
     log`Payload:`;
     console.log(payload);
 
-    if(this.onDelta) {
+    if (this.onDelta) {
       log`onDelta provided, calling...`;
       this.onDelta(topic, payload);
     }
