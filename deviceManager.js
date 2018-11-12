@@ -56,9 +56,7 @@ class DeviceManager {
     }
 
     _handleMessage(topic, payload) {
-        log`Message received from Topic ${topic}. Processing...`;
-        log`Payload:`;
-        console.log(payload);
+        log`Message received from Topic ${topic}.`;
         if(this.onMessage) {
             this.onMessage(topic, payload);
         }
