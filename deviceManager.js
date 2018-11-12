@@ -8,13 +8,13 @@ const events = {
     delta: "delta",
     close: "close",
     reconnect: "reconnect",
-    offline: "offline"
+    offline: "offline",
+    error: "error"
 };
 AwsIot.thingShadow
 
 const awsDeltaPath = "$aws/things/<THING>/shadow/update/delta";
 const getAwsDeltaPath = thing => awsDeltaPath.replace("<THING>", thing);
-let log;
 
 class DeviceManager {
     constructor(deviceModuleOptions, topicsToSubscribeTo = [], onMessage = null, onDelta = null) {
@@ -28,13 +28,11 @@ class DeviceManager {
 
         this.shadow = new AwsIot.thingShadow(opts);
 
-        log = makeLogger(`Device ${this.clientId}`);
-        this.bindHandlers();
-        
+        this.log = makeLogger(`Device ${this.clientId}`);
+        this.bindHandlers();   
     }
 
     bindHandlers() {
-        log`bind handlers`;
 
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
@@ -45,32 +43,34 @@ class DeviceManager {
         this.device.on(events.close, () => console.log("CLOSE EVENT"));
         this.device.on(events.reconnect, () => console.log("RECONNECT EVENT"));
         this.device.on(events.offline, () => console.log("OFFLINE EVENT"));
-        this.device.on("error", err => console.log(`ERROR EVENT`, err));
+        this.device.on(events.error, (err) => console.log(`ERROR EVENT`, err));
     }
 
     subscribe() {
-        log`subscribe`;
+        this.log`MESSAGE METHOD`;
         if (!this._subscribed) {
             this.device.subscribe(this._topicsToSubscribeTo);
         }
     }
 
     _handleConnect() {
+        this.log`CONNECT EVENT`;
         if (this.connected) {
-            log`already connected`;
+            this.log`already connected`;
             return;
         }
         this.connected = true;
-        log`connected`;
-        log`resgistering thingShadow`;
+        this.log`connected`;
+        this.log`resgistering thingShadow`;
         this.shadow.register(this.clientId);
-        log`subscribing to shadow update deltas`;
+        this.log`subscribing to shadow update deltas`;
         this.deltaTopicPath = getAwsDeltaPath(this.clientId);
         this._topicsToSubscribeTo.push(this.deltaTopicPath);
         this.subscribe();
     }
 
     _handleMessage(topic, payload) {
+        this.log`MESSAGE EVENT`;
         if (topic === this.deltaTopicPath) {
             if (this.onDelta) {
                 this.onDelta(payload, this.shadow);
