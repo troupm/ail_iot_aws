@@ -1,6 +1,7 @@
 const AwsIot = require('aws-iot-device-sdk');
 const deviceDefaults = require("./deviceDefaults");
 const makeLogger = require("./makeLogger");
+const { parsePayload } = require("./helpers");
 
 const events = {
     connect: "connect",
@@ -29,7 +30,7 @@ class DeviceManager {
         this.shadow = new AwsIot.thingShadow(opts);
 
         this.log = makeLogger(`Device ${this.clientId}`);
-        this.bindHandlers();   
+        this.bindHandlers();
     }
 
     bindHandlers() {
@@ -70,6 +71,9 @@ class DeviceManager {
 
     _handleMessage(topic, payload) {
         this.log`MESSAGE EVENT`;
+        payload = parsePayload(payload);
+        console.log("topic", topic);
+        console.log("payload", payload);
         if (topic === this.deltaTopicPath) {
             if (this.onDelta) {
                 this.onDelta(payload, this.shadow);
