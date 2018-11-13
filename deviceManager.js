@@ -39,13 +39,21 @@ class DeviceManager {
                     console.log(`thingShadow State clientId = ${this.clientId}:`);
                     console.log(shadowState);
                     console.log("Updating thingShadow State- light:on");
-                    let thisDelta = {
+                    // update shadow
+                    this.shadow.update(this.clientId, {
                         state: {
                         reported: {
                             light: 'on'
-                        }}};
-                    shadowState = {...shadowState,...thisDelta};
-                    this.shadow.update(this.shadow.clientId, thisDelta)
+                        }
+                        }
+                    })
+                    // let thisDelta = {
+                    //     state: {
+                    //     reported: {
+                    //         light: 'on'
+                    //     }}};
+                    // shadowState = {...shadowState,...thisDelta};
+                    // this.shadow.update(this.shadow.clientId, thisDelta)
                     console.log(`New thingShadow State clientId = ${this.clientId}:`);
                     shadowState = this.shadow.get(this.clientId);
                     console.log(shadowState);
