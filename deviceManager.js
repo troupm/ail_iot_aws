@@ -44,7 +44,7 @@ class DeviceManager {
                 light: 'on'
             }}};
         shadowState = {...shadowState,...thisDelta};
-        this.shadow.update(shadow.clientId, shadowState)
+        this.shadow.update(this.shadow.clientId, shadowState)
         console.log("New thingShadow State:");
         shadowState = this.shadow.get(this.clientId);
         console.log(shadowState);
