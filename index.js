@@ -9,10 +9,67 @@ const led12 = new LedManager(12);
 
 function handleDelta(payload, shadow) {
     console.log("delta", payload, shadow);
+    if(payload.delta && payload.delta.light === 'on')
+    {
+        console.log("DELTA: Swithing LED on...");
+        led.value(true);
+        // update shadow
+        shadow.update(ThingName, {
+            state: {
+            reported: {
+                light: 'on'
+            }
+            }
+        })
+        console.log("DELTA: Thing Shadow Updated");
+    } 
+    else if (payload.delta && payload.delta.light == 'off')
+    {
+        console.log("DELTA: Swithing LED off...");
+        led.value(false);
+        shadow.update(ThingName, {
+            state: {
+            reported: {
+                light: 'off'
+            }
+            }
+        })
+        console.log("DELTA: Thing Shadow Updated");
+    }
 }
 
 function handleMesasage(topic, payload, shadow) {
     console.log("message", topic, payload, shadow);
+    if(topic == 'LED')
+    {
+        if(payload.light == 'on')
+        {
+            console.log(`MESSAGE ${topic}: Switching LED on...`);
+            led.value(true);
+            // update shadow
+            shadow.update(ThingName, {
+                state: {
+                reported: {
+                    light: 'on'
+                }
+                }
+            })
+            console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
+        } 
+        else 
+        {
+            console.log(`MESSAGE ${topic}: Switching LED off...`);
+            led.value(false);
+            shadow.update(ThingName, {
+                state: {
+                reported: {
+                    light: 'off'
+                }
+                }
+            });
+            console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
+        }
+    }
 }
 
 new DeviceManager({clientId: thingName, host: thingHost}, ["LED"], handleMesasage, handleDelta);
