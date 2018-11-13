@@ -2,6 +2,7 @@ const AwsIot = require('aws-iot-device-sdk');
 const deviceDefaults = require("./deviceDefaults");
 const makeLogger = require("./makeLogger");
 const { parsePayload } = require("./helpers");
+const shadowState = null;
 
 const events = {
     connect: "connect",
@@ -33,7 +34,20 @@ class DeviceManager {
         this.shadow = new AwsIot.thingShadow(opts);
         this.log`resgistering thingShadow`;
         this.shadow.register(this.clientId);
-
+        shadowState = this.shadow.get(this.clientId);
+        console.log("thingShadow State:");
+        console.log(shadowState);
+        console.log("Updating thingShadow State- light:on");
+        let thisDelta = {
+            state: {
+            reported: {
+                light: 'on'
+            }}};
+        shadowState = {...shadowState,...thisDelta};
+        this.shadow.update(shadow.clientId, shadowState)
+        console.log("New thingShadow State:");
+        shadowState = this.shadow.get(this.clientId);
+        console.log(shadowState);
         this.bindHandlers();
     }
 
