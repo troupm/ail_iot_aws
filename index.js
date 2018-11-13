@@ -43,6 +43,7 @@ function handleMesasage(topic, payload, shadow) {
     console.log("message", topic, payload, shadow);
     if(topic == 'LED')
     {
+        try{
         if(payload.light == 'on')
         {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
@@ -70,6 +71,11 @@ function handleMesasage(topic, payload, shadow) {
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
         }
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
     }
 }
 
