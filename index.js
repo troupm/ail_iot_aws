@@ -14,7 +14,7 @@ function handleDelta(payload, shadow) {
         console.log("DELTA: Swithing LED on...");
         led12.setOn();
         // update shadow
-        shadow.update(shadow.clientId, {
+        this.shadow.update(shadow.clientId, {
             state: {
             reported: {
                 light: 'on'
@@ -28,7 +28,7 @@ function handleDelta(payload, shadow) {
     {
         console.log("DELTA: Swithing LED off...");
         led12.setOff();
-        shadow.update(shadow.clientId, {
+        this.shadow.update(shadow.clientId, {
             state: {
             reported: {
                 light: 'off'
@@ -48,7 +48,7 @@ function handleMesasage(topic, payload, shadow) {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
             led12.setOn();
             // update shadow
-            shadow.update(shadow.clientId, {
+            this.shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'on'
@@ -61,7 +61,7 @@ function handleMesasage(topic, payload, shadow) {
         {
             console.log(`MESSAGE ${topic}: Switching LED off...`);
             led12.setOff();
-            shadow.update(shadow.clientId, {
+            this.shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'off'
