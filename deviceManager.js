@@ -32,10 +32,10 @@ class DeviceManager {
 
         opts.maximumReconnectTimeMs = 3000;
         this.shadow = new AwsIot.thingShadow(opts);
-        this.log`resgistering thingShadow`;
+        this.log`resgistering thingShadow clientId = ${this.clientId}`;
         this.shadow.register(this.clientId);
         shadowState = this.shadow.get(this.clientId);
-        console.log("thingShadow State:");
+        console.log(`thingShadow State clientId = ${this.clientId}:`);
         console.log(shadowState);
         console.log("Updating thingShadow State- light:on");
         let thisDelta = {
@@ -45,7 +45,7 @@ class DeviceManager {
             }}};
         shadowState = {...shadowState,...thisDelta};
         this.shadow.update(this.shadow.clientId, shadowState)
-        console.log("New thingShadow State:");
+        console.log(`New thingShadow State clientId = ${this.clientId}:`);
         shadowState = this.shadow.get(this.clientId);
         console.log(shadowState);
         this.bindHandlers();
