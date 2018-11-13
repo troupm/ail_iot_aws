@@ -19,7 +19,7 @@
     "rpio": "^0.9.23"
   },
   "devDependencies": {
-    "typescript": "^3.1.3",
-    "@types/aws-iot-device-sdk": "^2.1.1"
+    "@types/aws-iot-device-sdk": "^2.1.1",
+    "typescript": "^3.1.3"
   }
 }

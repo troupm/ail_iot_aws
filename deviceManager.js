@@ -27,7 +27,10 @@ class DeviceManager {
         this.device = new AwsIot.device(opts);
         this.clientId = opts.clientId;
 
+        opts.maximumReconnectTimeMs = 3000,
         this.shadow = new AwsIot.thingShadow(opts);
+        this.log`resgistering thingShadow`;
+        this.shadow.register(this.clientId);
 
         this.log = makeLogger(`Device ${this.clientId}`);
         this.bindHandlers();
@@ -61,8 +64,6 @@ class DeviceManager {
         }
         this.connected = true;
         this.log`connected`;
-        this.log`resgistering thingShadow`;
-        this.shadow.register(this.clientId);
         this.log`subscribing to shadow update deltas`;
         this.deltaTopicPath = getAwsDeltaPath(this.clientId);
         this._topicsToSubscribeTo.push(this.deltaTopicPath);
