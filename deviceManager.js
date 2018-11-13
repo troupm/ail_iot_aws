@@ -50,7 +50,7 @@ class DeviceManager {
                     console.log(`New thingShadow State clientId = ${this.clientId}:`);
                     shadowState = this.shadow.get(this.clientId);
                     console.log(shadowState);
-                })      
+                }).catch((err)=>console.error(err));
         this.bindHandlers();
     }
 
