@@ -27,7 +27,7 @@ class DeviceManager {
         this.device = new AwsIot.device(opts);
         this.clientId = opts.clientId;
 
-        opts.maximumReconnectTimeMs = 3000,
+        opts.maximumReconnectTimeMs = 3000;
         this.shadow = new AwsIot.thingShadow(opts);
         this.log`resgistering thingShadow`;
         this.shadow.register(this.clientId);
