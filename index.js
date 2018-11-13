@@ -14,21 +14,21 @@ function handleDelta(payload, shadow) {
         console.log("DELTA: Swithing LED on...");
         led12.setOn();
         // update shadow
-        this.shadow.update(shadow.clientId, {
+        shadow.update(shadow.clientId, {
             state: {
             reported: {
                 light: 'on'
             }
             }
-
         })
         console.log("DELTA: Thing Shadow Updated");
+        console.log(shadow);
     } 
     else if (payload.delta && payload.delta.light == 'off')
     {
         console.log("DELTA: Swithing LED off...");
         led12.setOff();
-        this.shadow.update(shadow.clientId, {
+        shadow.update(shadow.clientId, {
             state: {
             reported: {
                 light: 'off'
@@ -36,6 +36,7 @@ function handleDelta(payload, shadow) {
             }
         })
         console.log("DELTA: Thing Shadow Updated");
+        console.log(shadow);
     }
 }
 
@@ -49,7 +50,7 @@ function handleMesasage(topic, payload, shadow) {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
             led12.setOn();
             // update shadow
-            this.shadow.update(shadow.clientId, {
+            shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'on'
@@ -57,12 +58,13 @@ function handleMesasage(topic, payload, shadow) {
                 }
             })
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
+            console.log(shadow);
         } 
         else 
         {
             console.log(`MESSAGE ${topic}: Switching LED off...`);
             led12.setOff();
-            this.shadow.update(shadow.clientId, {
+            shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'off'
@@ -70,6 +72,7 @@ function handleMesasage(topic, payload, shadow) {
                 }
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
+            console.log(shadow);
         }
     }
     catch(err)
