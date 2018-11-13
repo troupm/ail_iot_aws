@@ -2,7 +2,7 @@ const AwsIot = require('aws-iot-device-sdk');
 const deviceDefaults = require("./deviceDefaults");
 const makeLogger = require("./makeLogger");
 const { parsePayload } = require("./helpers");
-const shadowState = null;
+var shadowState = null;
 
 const events = {
     connect: "connect",
