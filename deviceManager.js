@@ -132,7 +132,7 @@ class DeviceManager {
         console.log("thing name", thingName);
         console.log("payload", JSON.stringify(payload,null,4));
         //payload = parsePayload(payload);
-        if (this.onDelta) {
+        if (this.onDelta !== null) {
             this.onDelta(thingName, payload, this.shadow);
         }
     }

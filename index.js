@@ -8,6 +8,7 @@ const thingHost = 'a3knx5ouu01ymf-ats.iot.us-east-1.amazonaws.com';
 const led12 = new LedManager(12);
 
 function handleDelta(thingName, payload, shadow) {
+    console.log("** handleDelta Invoked **");
     console.log("delta", payload, shadow);
     if(payload.state && payload.state.light === 'on')
     {
