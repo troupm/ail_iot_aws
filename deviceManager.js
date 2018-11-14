@@ -34,30 +34,59 @@ class DeviceManager {
         opts.maximumReconnectTimeMs = 3000;
         this.shadow = new AwsIot.thingShadow(opts);
         this.log`resgistering thingShadow clientId = ${this.clientId}`;
-        this.shadow.register(this.clientId, ()=>{
-                    shadowState = this.shadow.get(this.clientId);
-                    console.log(`thingShadow State clientId = ${this.clientId}:`);
-                    console.log(shadowState);
-                    console.log("Updating thingShadow State- light:on");
-                    // update shadow
-                    this.shadow.update(this.clientId, {
-                        state: {
-                        reported: {
-                            light: 'on'
-                        }
-                        }
-                    })
-                    // let thisDelta = {
-                    //     state: {
-                    //     reported: {
-                    //         light: 'on'
-                    //     }}};
-                    // shadowState = {...shadowState,...thisDelta};
-                    // this.shadow.update(this.shadow.clientId, thisDelta)
-                    console.log(`New thingShadow State clientId = ${this.clientId}:`);
-                    shadowState = this.shadow.get(this.clientId);
-                    console.log(shadowState);
-                });
+        // this.shadow.register(this.clientId, ()=>{
+        //             shadowState = this.shadow.get(this.clientId);
+        //             console.log(`thingShadow State clientId = ${this.clientId}:`);
+        //             console.log(shadowState);
+        //             console.log("Updating thingShadow State- light:on");
+        //             // update shadow
+        //             this.shadow.update(this.clientId, {
+        //                 state: {
+        //                 reported: {
+        //                     light: 'on'
+        //                 }
+        //                 }
+        //             })
+        //             // let thisDelta = {
+        //             //     state: {
+        //             //     reported: {
+        //             //         light: 'on'
+        //             //     }}};
+        //             // shadowState = {...shadowState,...thisDelta};
+        //             // this.shadow.update(this.shadow.clientId, thisDelta)
+        //             console.log(`New thingShadow State clientId = ${this.clientId}:`);
+        //             shadowState = this.shadow.get(this.clientId);
+        //             console.log(shadowState);
+        //         });
+
+        this.shadow.register( this.clientId, {}, function() {
+            console.log('thingShadow.register : Registering...');
+        // Once registration is complete, update the Thing Shadow named
+        // 'RGBLedLamp' with the latest device state and save the clientToken
+        // so that we can correlate it with status or timeout events.
+        //
+        // Thing shadow state
+        //
+               var ledState = {"state":{"desired":{"light":"on"}}};
+        
+               clientTokenUpdate = this.shadow.update(this.clientId, ledState  );
+        //
+        // The update method returns a clientToken; if non-null, this value will
+        // be sent in a 'status' event when the operation completes, allowing you
+        // to know whether or not the update was successful.  If the update method
+        // returns null, it's because another operation is currently in progress and
+        // you'll need to wait until it completes (or times out) before updating the 
+        // shadow.
+        //
+               if (clientTokenUpdate === null)
+               {
+                  console.log('update shadow failed, operation still in progress');
+               }
+               else{
+                console.log('thingShadow.register : thingShadow registered sucessully.');
+               }
+            });
+
         this.bindHandlers();
     }
 
