@@ -16,7 +16,9 @@ function handleDelta(thingName, payload, shadow) {
         led12.setOn();
         // update shadow
         shadow.update(thingName, {
-            light: 'on'
+            state: {
+                light: 'on'
+            }
         })
         console.log("DELTA: Thing Shadow Updated");
         console.log(shadow);
@@ -26,7 +28,9 @@ function handleDelta(thingName, payload, shadow) {
         console.log("DELTA: Swithing LED off...");
         led12.setOff();
         shadow.update(thingName, {
-            light: 'off'
+            state: {
+                light: 'off'
+            }
         })
         console.log("DELTA: Thing Shadow Updated");
         console.log(shadow);
