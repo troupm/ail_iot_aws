@@ -131,7 +131,7 @@ class DeviceManager {
         this.log`*** DELTA EVENT ***`;
         console.log("thing name", thingName);
         console.log("payload", JSON.stringify(payload,null,4));
-        payload = parsePayload(payload);
+        //payload = parsePayload(payload);
         if (this.onDelta) {
             this.onDelta(thingName, payload);
         }
