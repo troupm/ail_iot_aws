@@ -59,7 +59,7 @@ function handleMesasage(topic, payload, shadow) {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
             led12.setOn();
             // update shadow
-            shadow.update(shadow.clientId, {
+            let response = shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'on'
@@ -70,13 +70,13 @@ function handleMesasage(topic, payload, shadow) {
                 }
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
-            console.log(shadow);
+            console.log(response);
         } 
         else 
         {
             console.log(`MESSAGE ${topic}: Switching LED off...`);
             led12.setOff();
-            shadow.update(shadow.clientId, {
+            let response = shadow.update(shadow.clientId, {
                 state: {
                 reported: {
                     light: 'off'
@@ -87,7 +87,7 @@ function handleMesasage(topic, payload, shadow) {
                 }
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
-            console.log(shadow);
+            console.log(response);
         }
     }
     catch(err)
