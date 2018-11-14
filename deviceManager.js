@@ -84,7 +84,7 @@ class DeviceManager {
                   console.log('update shadow failed, operation still in progress');
                }
                else{
-                console.log('thingShadow.register : thingShadow registered sucessully.');
+                console.log(`thingShadow.register : thingShadow registered sucessully. Client ID: ${clientTokenUpdate}`);
                }
             });
 
