@@ -25,6 +25,7 @@ class DeviceManager {
         this.onDelta = onDelta;
         this._topicsToSubscribeTo = topicsToSubscribeTo;
         this._subscribed = false;
+        const that = this;
         const opts = { ...deviceDefaults, ...deviceModuleOptions };
         this.device = new AwsIot.device(opts);
         this.clientId = opts.clientId;
@@ -59,7 +60,7 @@ class DeviceManager {
         //             console.log(shadowState);
         //         });
 
-        this.shadow.register( this.clientId, {}, function() {
+        this.shadow.register( this.clientId, {}, () => {
             console.log('thingShadow.register : Registering...');
         // Once registration is complete, update the Thing Shadow named
         // 'RGBLedLamp' with the latest device state and save the clientToken
@@ -69,7 +70,7 @@ class DeviceManager {
         //
                var ledState = {"state":{"desired":{"light":"on"}}};
         
-               clientTokenUpdate = shadow.update(this.clientId, ledState  );
+               clientTokenUpdate = this.shadow.update(this.clientId, ledState  );
         //
         // The update method returns a clientToken; if non-null, this value will
         // be sent in a 'status' event when the operation completes, allowing you
