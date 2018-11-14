@@ -17,9 +17,15 @@ function handleDelta(thingName, payload, shadow) {
         // update shadow
         shadow.update(thingName, {
             state: {
-                light: 'on'
+                reported: {
+                    light: 'on'
+                }
+                // ,
+                // desired: {
+                //     light: 'on'
+                // }
             }
-        })
+        });
         console.log("DELTA: Thing Shadow Updated");
         console.log(shadow);
     } 
@@ -29,9 +35,15 @@ function handleDelta(thingName, payload, shadow) {
         led12.setOff();
         shadow.update(thingName, {
             state: {
-                light: 'off'
+                reported: {
+                    light: 'off'
+                }
+                // ,
+                // desired: {
+                //     light: 'off'
+                // }
             }
-        })
+        });
         console.log("DELTA: Thing Shadow Updated");
         console.log(shadow);
     }
@@ -51,9 +63,12 @@ function handleMesasage(topic, payload, shadow) {
                 state: {
                 reported: {
                     light: 'on'
+                },
+                desired: {
+                    light: 'on'
                 }
                 }
-            })
+            });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
             console.log(shadow);
         } 
@@ -64,6 +79,9 @@ function handleMesasage(topic, payload, shadow) {
             shadow.update(shadow.clientId, {
                 state: {
                 reported: {
+                    light: 'off'
+                },
+                desired: {
                     light: 'off'
                 }
                 }

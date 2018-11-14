@@ -5,6 +5,10 @@ const { parsePayload } = require("./helpers");
 const util = require('util');
 var shadowState = null;
 
+const settings = {
+    subscribeToDeltaMessage: false
+};
+
 const events = {
     connect: "connect",
     message: "message",
@@ -121,9 +125,12 @@ class DeviceManager {
         }
         this.connected = true;
         this.log`connected`;
-        this.log`subscribing to shadow update deltas`;
-        this.deltaTopicPath = getAwsDeltaPath(this.clientId);
-        this._topicsToSubscribeTo.push(this.deltaTopicPath);
+        if(settings.subscribeToDeltaMessage){
+            this.log`subscribeToDeltaMessage = true : subscribing to shadow update delta message`;
+            this.deltaTopicPath = getAwsDeltaPath(this.clientId);
+            this._topicsToSubscribeTo.push(this.deltaTopicPath);
+        }
+        else{this.log`subscribeToDeltaMessage = false : SKIPPING subscribe to shadow update delta message`;}
         this.subscribe();
     }
 
