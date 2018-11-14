@@ -97,7 +97,7 @@ class DeviceManager {
         this._handleDelta = this._handleDelta.bind(this);
 
         this.device.on(events.connect, this._handleConnect);
-        //this.device.on(events.message, this._handleMessage);
+        this.device.on(events.message, this._handleMessage);
         this.shadow.on(events.delta, this._handleDelta);
 
         this.device.on(events.close, () => this.log`CLOSE EVENT`);
