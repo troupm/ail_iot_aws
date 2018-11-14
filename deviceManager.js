@@ -133,7 +133,7 @@ class DeviceManager {
         console.log("payload", JSON.stringify(payload,null,4));
         //payload = parsePayload(payload);
         if (this.onDelta) {
-            this.onDelta(thingName, payload);
+            this.onDelta(thingName, payload, this.shadow);
         }
     }
 
