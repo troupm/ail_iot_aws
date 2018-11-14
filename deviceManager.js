@@ -130,7 +130,7 @@ class DeviceManager {
     _handleDelta(thingName, payload) {
         this.log`*** DELTA EVENT ***`;
         console.log("thing name", thingName);
-        console.log("payload", payload.toString());
+        console.log("payload", JSON.stringify(payload,null,4));
         payload = parsePayload(payload);
         if (this.onDelta) {
             this.onDelta(thingName, payload);
