@@ -69,7 +69,7 @@ class DeviceManager {
         //
                var ledState = {"state":{"desired":{"light":"on"}}};
         
-               clientTokenUpdate = this.shadow.update(this.clientId, ledState  );
+               clientTokenUpdate = shadow.update(this.clientId, ledState  );
         //
         // The update method returns a clientToken; if non-null, this value will
         // be sent in a 'status' event when the operation completes, allowing you
