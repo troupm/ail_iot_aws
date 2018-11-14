@@ -9,7 +9,7 @@ const led12 = new LedManager(12);
 
 function handleDelta(thingName, payload, shadow) {
     console.log("delta", payload, shadow);
-    if(payload.delta && payload.delta.light === 'on')
+    if(payload.state && payload.state.light === 'on')
     {
         console.log("DELTA: Swithing LED on...");
         led12.setOn();
@@ -22,12 +22,12 @@ function handleDelta(thingName, payload, shadow) {
         console.log("DELTA: Thing Shadow Updated");
         console.log(shadow);
     } 
-    else if (payload.delta && payload.delta.light == 'off')
+    else if (payload.state && payload.state.light == 'off')
     {
         console.log("DELTA: Swithing LED off...");
         led12.setOff();
         shadow.update(shadow.clientId, {
-            state: {
+            reported: {
                 light: 'off'
             }
         })
