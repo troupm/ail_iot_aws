@@ -18,7 +18,6 @@ const events = {
     offline: "offline",
     error: "error"
 };
-AwsIot.thingShadow
 
 const awsDeltaPath = "$aws/things/<THING>/shadow/update/delta";
 const getAwsDeltaPath = thing => awsDeltaPath.replace("<THING>", thing);
@@ -144,12 +143,12 @@ class DeviceManager {
     }
 
     _handleMessage(topic, payload) {
-        this.log`MESSAGE EVENT`;
+        this.log`*** MESSAGE EVENT ***`;
         payload = parsePayload(payload);
         console.log("topic", topic);
         console.log("payload", payload);
         if (this.onMessage) {
-                this.onMessage(topic, payload, this.shadow);
+                this.onMessage(topic, payload, this.shadow, this.clientId);
             }
         }
     }

@@ -49,8 +49,8 @@ function handleDelta(thingName, payload, shadow) {
     }
 }
 
-function handleMesasage(topic, payload, shadow) {
-    console.log("message", topic, payload, shadow);
+function handleMesasage(topic, payload, shadow, thingName) {
+    console.log("message", topic, payload, shadow, thingName);
     if(topic == 'LED')
     {
         try{
@@ -59,7 +59,7 @@ function handleMesasage(topic, payload, shadow) {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
             led12.setOn();
             // update shadow
-            let response = shadow.update(shadow.clientId, {
+            let response = shadow.update(thingName, {
                 state: {
                 reported: {
                     light: 'on'
@@ -76,7 +76,7 @@ function handleMesasage(topic, payload, shadow) {
         {
             console.log(`MESSAGE ${topic}: Switching LED off...`);
             led12.setOff();
-            let response = shadow.update(shadow.clientId, {
+            let response = shadow.update(thingName, {
                 state: {
                 reported: {
                     light: 'off'
