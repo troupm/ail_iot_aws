@@ -128,8 +128,8 @@ class DeviceManager {
     }
 
     _handleDelta(thingName, payload) {
-        this.log`DELTA EVENT`;
-        console.log("thing name", thingName.toString());
+        this.log`*** DELTA EVENT ***`;
+        console.log("thing name", thingName);
         console.log("payload", payload.toString());
         payload = parsePayload(payload);
         if (this.onDelta) {
