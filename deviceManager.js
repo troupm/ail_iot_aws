@@ -64,9 +64,11 @@ class DeviceManager {
     bindHandlers() {
         this._handleConnect = this._handleConnect.bind(this);
         this._handleMessage = this._handleMessage.bind(this);
+        this._handleDelta = this._handleDelta.bind(this);
 
         this.device.on(events.connect, this._handleConnect);
         this.device.on(events.message, this._handleMessage);
+        this.shadow.on(events.delta, this._handleDelta);
 
         this.device.on(events.close, () => this.log`CLOSE EVENT`);
         this.device.on(events.reconnect, () => this.log`RECONNECT EVENT`);
@@ -95,22 +97,25 @@ class DeviceManager {
         this.subscribe();
     }
 
+    _handleDelta(thingName, payload) {
+        this.log`DELTA EVENT`;
+        payload = parsePayload(payload);
+        console.log("thing name", thingName);
+        console.log("payload", payload);
+        if (this.onDelta) {
+            this.onDelta(thingName, payload);
+        }
+    }
+
     _handleMessage(topic, payload) {
         this.log`MESSAGE EVENT`;
         payload = parsePayload(payload);
         console.log("topic", topic);
         console.log("payload", payload);
-        if (topic === this.deltaTopicPath) {
-            if (this.onDelta) {
-                this.onDelta(payload, this.shadow);
-            }
-        } else {
-            if (this.onMessage) {
+        if (this.onMessage) {
                 this.onMessage(topic, payload, this.shadow);
             }
         }
     }
-
-}
 
 module.exports = DeviceManager;
