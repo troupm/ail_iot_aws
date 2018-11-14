@@ -31,13 +31,12 @@ class DeviceManager {
         this._subscribed = false;
         const that = this;
         const opts = { ...deviceDefaults, ...deviceModuleOptions };
-        this.device = new AwsIot.device(opts);
+        this.shadow = AwsIot.thingShadow({...opts, maximumReconnectTimeMs: 3000});
+        this.device = AwsIot.device(opts);
         this.clientId = opts.clientId;
 
         this.log = makeLogger(`Device ${this.clientId}`);
 
-        opts.maximumReconnectTimeMs = 3000;
-        this.shadow = new AwsIot.thingShadow(opts);
         this.log`resgistering thingShadow clientId = ${this.clientId}`;
         // this.shadow.register(this.clientId, ()=>{
         //             shadowState = this.shadow.get(this.clientId);
