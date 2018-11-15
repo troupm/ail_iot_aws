@@ -74,10 +74,10 @@ function handleDelta(thingName, payload, shadow) {
                 reported: {
                     tempSetpoint: payload.state.tempSetpoint
                 }
-                // ,
-                // desired: {
-                //     light: 'off'
-                // }
+                ,
+                desired: {
+                    temp: payload.state.tempSetpoint
+                }
             }
         });
         console.log("DELTA: Thing Shadow Updated");
