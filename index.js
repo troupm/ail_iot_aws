@@ -136,4 +136,4 @@ function handleMesasage(topic, payload, shadow, thingName) {
     }
 }
 
-new DeviceManager({clientId: thingName, host: thingHost, offlineQueueing: true, autoResubscribe: true}, ["LED"], handleMesasage, handleDelta);
+new DeviceManager({clientId: thingName, host: thingHost, offlineQueueing: true, autoResubscribe: true}, ["LED", "Sensor"], handleMesasage, handleDelta);
