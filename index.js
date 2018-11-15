@@ -50,11 +50,29 @@ function handleDelta(thingName, payload, shadow) {
     if(payload.state && payload.state.temp)
     {
         console.log("DELTA: settig temperature...");
+        console.log("*** TODO: Implement temperature on device here");
+        shadow.update(thingName, {
+            state: {
+                reported: {
+                    temp: payload.state.temp
+                }
+                // ,
+                // desired: {
+                //     light: 'off'
+                // }
+            }
+        });
+        console.log("DELTA: Thing Shadow Updated");
+        console.log(JSON.stringify(shadow,null,4));
+    }
+    if(payload.state && payload.state.tempSetpoint)
+    {
+        console.log("DELTA: settig temperature SetPoint...");
         console.log("*** TODO: Implement temperature setpoint on device here");
         shadow.update(thingName, {
             state: {
                 reported: {
-                    tempSetpoint: payload.state.temp
+                    tempSetpoint: payload.state.tempSetpoint
                 }
                 // ,
                 // desired: {
