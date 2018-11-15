@@ -1,16 +1,16 @@
 const gpio = require("pi-pins");
 const makeLogger = require("./makeLogger");
+var lastValue = false;
 
 let log;
 
-class LedManager {
+class SensorManager {
     constructor(pin) {
         this.pin = pin;
         this.led = gpio.connect(pin);
-        this.led.mode("out");
+        this.led.mode("in");
         this.value = false;
-        log = makeLogger(`LED Pin ${pin}`);
-        log`initializing to off`;
+        log = makeLogger(`Sensor Pin ${pin}`);
         this._update();
     }
 
@@ -20,8 +20,9 @@ class LedManager {
         this._update();
     }
 
-    setOn() {
-        log`sending on signal`;
+    read() {
+        log`reading from pin ${this.pin}`;
+        this.lastValue = this.value;
         this.value = true;
         this._update();
     }

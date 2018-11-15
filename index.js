@@ -10,12 +10,12 @@ const led12 = new LedManager(12);
 function handleDelta(thingName, payload, shadow) {
     console.log("** handleDelta Invoked **");
     console.log("delta", payload, shadow);
-    if(payload.state && payload.state.light === 'on')
+    if(payload.state && payload.state.light && payload.state.light === 'on')
     {
         console.log("DELTA: Swithing LED on...");
         led12.setOn();
         // update shadow
-        let response = shadow.update(thingName, {
+        shadow.update(thingName, {
             state: {
                 reported: {
                     light: 'on'
@@ -27,13 +27,13 @@ function handleDelta(thingName, payload, shadow) {
             }
         });
         console.log("DELTA: Thing Shadow Updated");
-        console.log(response);
+        console.log(JSON.stringify(shadow,null,4));
     } 
-    else if (payload.state && payload.state.light == 'off')
+    if(payload.state && payload.state.light && payload.state.light === 'off')
     {
         console.log("DELTA: Swithing LED off...");
         led12.setOff();
-        let response = shadow.update(thingName, {
+        shadow.update(thingName, {
             state: {
                 reported: {
                     light: 'off'
@@ -45,7 +45,25 @@ function handleDelta(thingName, payload, shadow) {
             }
         });
         console.log("DELTA: Thing Shadow Updated");
-        console.log(response);
+        console.log(JSON.stringify(shadow,null,4));
+    }
+    if(payload.state && payload.state.temp)
+    {
+        console.log("DELTA: settig temperature...");
+        console.log("*** TODO: Implement temperature setpoint on device here");
+        shadow.update(thingName, {
+            state: {
+                reported: {
+                    tempSetpoint: payload.state.temp
+                }
+                // ,
+                // desired: {
+                //     light: 'off'
+                // }
+            }
+        });
+        console.log("DELTA: Thing Shadow Updated");
+        console.log(JSON.stringify(shadow,null,4));
     }
 }
 
@@ -59,7 +77,7 @@ function handleMesasage(topic, payload, shadow, thingName) {
             console.log(`MESSAGE ${topic}: Switching LED on...`);
             led12.setOn();
             // update shadow
-            let response = shadow.update(thingName, {
+            shadow.update(thingName, {
                 state: {
                 reported: {
                     light: 'on'
@@ -70,13 +88,13 @@ function handleMesasage(topic, payload, shadow, thingName) {
                 }
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
-            console.log(response);
+            console.log(JSON.stringify(shadow,null,4));
         } 
         else 
         {
             console.log(`MESSAGE ${topic}: Switching LED off...`);
             led12.setOff();
-            let response = shadow.update(thingName, {
+            shadow.update(thingName, {
                 state: {
                 reported: {
                     light: 'off'
@@ -87,8 +105,29 @@ function handleMesasage(topic, payload, shadow, thingName) {
                 }
             });
             console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
-            console.log(response);
+            console.log(JSON.stringify(shadow,null,4));
         }
+    }
+    catch(err)
+    {
+        console.error(err);
+    }
+    }
+    if(topic == 'Sensor')
+    {
+        try{
+        if(payload.temp)
+        {
+            shadow.update(thingName, {
+                state: {
+                desired: {
+                    temp: payload.temp
+                }
+                }
+            });
+            console.log(`MESSAGE ${topic}: Thing Shadow Updated`);
+            console.log(JSON.stringify(shadow,null,4));
+        } 
     }
     catch(err)
     {
